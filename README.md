@@ -1,4 +1,4 @@
 Rain-Generator
 ==============
 
-.Net library that reproduces the sound of rain.
+.Net based library for reproducing the sound of rain.
