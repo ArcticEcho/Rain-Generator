@@ -4,20 +4,18 @@ using System;
 
 namespace RainGenerator
 {
-    public class Generator
-    {
-	    private readonly Random r = new Random();
-	    private readonly float sampleRate;
-	    private int sampleCount;
-	    private float[] samples;
-	    private bool addDrop;
+	public class Generator
+	{
+		private readonly Random r = new Random();
+		private readonly float sampleRate;
+		private int sampleCount;
+		private float[] samples;
+		private bool addDrop;
 		private bool addedDrop = true;
 		private int dropFreq;
 		private float totalDropDuration;
 		private float singleDropDuration;
 		private int currentDropDuration;
-		private bool softenStart;
-		private bool softenEnd;
 		private double amplitude;
 		private bool addWind;
 		private bool addedWind = true;
@@ -27,10 +25,10 @@ namespace RainGenerator
 
 
 
-	    public Generator(float sampleRate)
-	    {
+		public Generator(float sampleRate)
+		{
 			this.sampleRate = sampleRate;
-	    }
+		}
 
 
 
@@ -46,9 +44,7 @@ namespace RainGenerator
 					addDrop = r.NextDouble() < 1.0 / sampleRate / rainIntensity; // Calc rain intensity.
 					dropFreq = r.Next(lowerDropFreq, higherDropFreq);            // Pick the drop's frequency.
 					singleDropDuration = sampleRate / dropFreq;                  // Samples for one full wave at specified frequency (i.e., sample count from peak to peak).
-					totalDropDuration = r.Next(1, 5) * singleDropDuration;       // Total number of oscillations ("full waves") long this drop will be drop.
-					softenStart = r.NextDouble() < 0;                          // Soften start of drop?
-					softenEnd = r.NextDouble() < 0;                            // Soften end of drop?
+					totalDropDuration = r.Next(1, 7) * singleDropDuration;       // Total number of oscillations ("full waves") long this drop will be drop.
 					amplitude = r.NextDouble();                                  // Choose drop "loudness".
 
 					if (addedWind)
@@ -80,22 +76,16 @@ namespace RainGenerator
 				}
 				else
 				{
-					samples[i] += (float)(GetBackgroundNoise(i, dropFreq) /*r.NextDouble()*/ * 0.1);
+					samples[i] += (float)(GetBackgroundNoise(i, dropFreq) * 0.1);
 				}
 
 				if (addDrop)
 				{
 					samples[i] += (float)(amplitude * Math.Sin(((Math.PI * 2 * dropFreq) / sampleRate) * i) * 4);
 
-					if (softenStart)
-					{
-						samples[i] *= currentDropDuration / totalDropDuration;
-					}
+					samples[i] *= currentDropDuration / totalDropDuration;
 
-					if (softenEnd)
-					{
-						samples[i] *= 1 - currentDropDuration / totalDropDuration;
-					}
+					samples[i] *= 1 - currentDropDuration / totalDropDuration;
 
 					addedDrop = false;
 					currentDropDuration++;
@@ -104,13 +94,11 @@ namespace RainGenerator
 					{
 						addedDrop = true;
 						addDrop = false;
-						softenStart = false;
-						softenEnd = false;
 						currentDropDuration = 0;
 					}
 				}
 
-				samples[i] *= 0.1f;
+				samples[i] *= 0.2f;
 			}
 
 			return samples;
@@ -122,5 +110,5 @@ namespace RainGenerator
 		{
 			return (Math.Sin(((Math.PI * 2 * freq) / (sampleRate + r.Next(-(int)(sampleRate * 0.01), (int)(sampleRate * 0.01)))) * i) * 0.5) + (r.NextDouble() * 0.5);
 		}
-    }
+	}
 }
