@@ -7,7 +7,7 @@
     <ProjectGuid>{563BF331-BEC7-4201-9FAE-FB42FD1A6419}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rain_Generator</RootNamespace>
+    <RootNamespace>RainGenerator</RootNamespace>
     <AssemblyName>Rain Generator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
